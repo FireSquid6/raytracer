@@ -5,9 +5,9 @@ export interface Tuple {
   w: number;
 }
 
-export const ZERO = tuple(0, 0, 0, 0);
+export const ZERO = make(0, 0, 0, 0);
 
-export function tuple(x: number, y: number, z: number, w: number): Tuple {
+export function make(x: number, y: number, z: number, w: number): Tuple {
   return {
     x: x,
     y: y,
@@ -17,31 +17,31 @@ export function tuple(x: number, y: number, z: number, w: number): Tuple {
 }
 
 export function point(x: number, y: number, z: number): Tuple {
-  return tuple(x, y, z, 1);
+  return make(x, y, z, 1);
 }
 
 export function vector(x: number, y: number, z: number): Tuple {
-  return tuple(x, y, z, 0);
+  return make(x, y, z, 0);
 }
 
 export function add(a: Tuple, b: Tuple) {
-  return tuple(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+  return make(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
 }
 
 export function subtract(a: Tuple, b: Tuple) {
-  return tuple(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+  return make(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
 }
 
 export function invert(a: Tuple) {
-  return tuple(-a.x, -a.y, -a.z, -a.w);
+  return make(-a.x, -a.y, -a.z, -a.w);
 }
 
 export function scalarMultiply(a: Tuple, b: number) {
-  return tuple(a.x * b, a.y * b, a.z * b, a.w * b);
+  return make(a.x * b, a.y * b, a.z * b, a.w * b);
 }
 
 export function scalarDivide(a: Tuple, b: number) {
-  return tuple(a.x / b, a.y / b, a.z / b, a.w / b);
+  return make(a.x / b, a.y / b, a.z / b, a.w / b);
 }
 
 export function magnitude(a: Tuple) {

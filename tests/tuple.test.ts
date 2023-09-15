@@ -1,21 +1,8 @@
 import { test, expect, describe } from "bun:test";
-import {
-  tuple,
-  invert,
-  crossProduct,
-  dotProduct,
-  point,
-  vector,
-  add,
-  subtract,
-  scalarMultiply,
-  scalarDivide,
-  normalized,
-  magnitude,
-} from "../lib/tuple";
+import * as Tuple from "../lib/tuple";
 
 test("tuple", () => {
-  const t = tuple(1, 2, 3, 4);
+  const t = Tuple.make(1, 2, 3, 4);
   expect(t.x).toEqual(1);
   expect(t.y).toEqual(2);
   expect(t.z).toEqual(3);
@@ -23,7 +10,7 @@ test("tuple", () => {
 });
 
 test("point", () => {
-  const p = point(1, 2, 3);
+  const p = Tuple.point(1, 2, 3);
   expect(p.x).toEqual(1);
   expect(p.y).toEqual(2);
   expect(p.z).toEqual(3);
@@ -31,7 +18,7 @@ test("point", () => {
 });
 
 test("vector", () => {
-  const p = vector(1, 2, 3);
+  const p = Tuple.vector(1, 2, 3);
   expect(p.x).toEqual(1);
   expect(p.y).toEqual(2);
   expect(p.z).toEqual(3);
@@ -39,10 +26,10 @@ test("vector", () => {
 });
 
 test("add tuple", () => {
-  const a = tuple(1, 2, 3, 0);
-  const b = tuple(1, 2, 3, 1);
+  const a = Tuple.make(1, 2, 3, 0);
+  const b = Tuple.make(1, 2, 3, 1);
 
-  const sum = add(a, b);
+  const sum = Tuple.add(a, b);
   expect(sum.x).toEqual(2);
   expect(sum.y).toEqual(4);
   expect(sum.z).toEqual(6);
@@ -50,10 +37,10 @@ test("add tuple", () => {
 });
 
 test("subtract tuple", () => {
-  const a = tuple(1, 2, 3, 1);
-  const b = tuple(1, 2, 3, 1);
+  const a = Tuple.make(1, 2, 3, 1);
+  const b = Tuple.make(1, 2, 3, 1);
 
-  const sum = subtract(a, b);
+  const sum = Tuple.subtract(a, b);
   expect(sum.x).toEqual(0);
   expect(sum.y).toEqual(0);
   expect(sum.z).toEqual(0);
@@ -61,8 +48,8 @@ test("subtract tuple", () => {
 });
 
 test("invert tuple", () => {
-  const a = tuple(1, 2, 3, 1);
-  const b = invert(a);
+  const a = Tuple.make(1, 2, 3, 1);
+  const b = Tuple.invert(a);
   expect(b.x).toEqual(-1);
   expect(b.y).toEqual(-2);
   expect(b.z).toEqual(-3);
@@ -70,9 +57,9 @@ test("invert tuple", () => {
 });
 
 test("scalar multiply tuple", () => {
-  const a = tuple(1, 2, 3, 1);
+  const a = Tuple.make(1, 2, 3, 1);
   const b = 2;
-  const c = scalarMultiply(a, b);
+  const c = Tuple.scalarMultiply(a, b);
   expect(c.x).toEqual(2);
   expect(c.y).toEqual(4);
   expect(c.z).toEqual(6);
@@ -80,9 +67,9 @@ test("scalar multiply tuple", () => {
 });
 
 test("scalar divide tuple", () => {
-  const a = tuple(1, 2, 3, 1);
+  const a = Tuple.make(1, 2, 3, 1);
   const b = 2;
-  const c = scalarDivide(a, b);
+  const c = Tuple.scalarDivide(a, b);
   expect(c.x).toEqual(0.5);
   expect(c.y).toEqual(1);
   expect(c.z).toEqual(1.5);
@@ -91,37 +78,39 @@ test("scalar divide tuple", () => {
 
 describe("magnitude of vector", () => {
   test("returns the magnitude", () => {
-    const a = vector(1, 2, 3);
-    const b = magnitude(a);
+    const a = Tuple.vector(1, 2, 3);
+    const b = Tuple.magnitude(a);
     expect(b).toEqual(Math.sqrt(14));
   });
 
   test("throws an error if the tuple is a point", () => {
-    const a = point(1, 2, 3);
-    expect(() => magnitude(a)).toThrow("cannot calculate magnitude of a point");
+    const a = Tuple.point(1, 2, 3);
+    expect(() => Tuple.magnitude(a)).toThrow(
+      "cannot calculate magnitude of a point"
+    );
   });
 });
 
 test("vector is normalized", () => {
-  const a = vector(1, 2, 3);
-  const b = normalized(a);
-  expect(magnitude(b)).toEqual(1);
+  const a = Tuple.vector(1, 2, 3);
+  const b = Tuple.normalized(a);
+  expect(Tuple.magnitude(b)).toEqual(1);
 });
 
 describe("dot product", () => {
   test("returns the dot product", () => {
-    const a = vector(1, 2, 3);
-    const b = vector(2, 3, 4);
+    const a = Tuple.vector(1, 2, 3);
+    const b = Tuple.vector(2, 3, 4);
 
-    const c = dotProduct(a, b);
+    const c = Tuple.dotProduct(a, b);
     expect(c).toEqual(20);
   });
 
   test("throws an error if the tuple is a point", () => {
-    const a = point(1, 2, 3);
-    const b = vector(2, 3, 4);
+    const a = Tuple.point(1, 2, 3);
+    const b = Tuple.vector(2, 3, 4);
 
-    expect(() => dotProduct(a, b)).toThrow(
+    expect(() => Tuple.dotProduct(a, b)).toThrow(
       "cannot calculate dot product of a point"
     );
   });
@@ -129,18 +118,18 @@ describe("dot product", () => {
 
 describe("cross product", () => {
   test("returns the cross product", () => {
-    const a = vector(1, 2, 3);
-    const b = vector(2, 3, 4);
+    const a = Tuple.vector(1, 2, 3);
+    const b = Tuple.vector(2, 3, 4);
 
-    const c = crossProduct(a, b);
-    expect(c).toEqual(vector(-1, 2, -1));
+    const c = Tuple.crossProduct(a, b);
+    expect(c).toEqual(Tuple.vector(-1, 2, -1));
   });
 
   test("throws an error if the tuple is a point", () => {
-    const a = point(1, 2, 3);
-    const b = vector(2, 3, 4);
+    const a = Tuple.point(1, 2, 3);
+    const b = Tuple.vector(2, 3, 4);
 
-    expect(() => crossProduct(a, b)).toThrow(
+    expect(() => Tuple.crossProduct(a, b)).toThrow(
       "cannot calculate cross product of a point"
     );
   });
